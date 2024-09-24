@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Alarma</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Prueba de Alarma</h1>
+        <label for="sucursal">Sucursal:</label>
+        <input type="text" id="sucursal" name="sucursal">
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre">
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido">
+
+        <button id="pruebaBtn" class="round-button">Prueba de Alarma</button>
+
+        <div id="feedback" style="display: none;">
+            <p>Pudo realizar la prueba de alarma satisfactoriamente?</p>
+            <button id="yesBtn">Sí</button>
+            <button id="noBtn">No</button>
+        </div>
+
+        <div id="details" style="display: none;">
+            <textarea id="detailsText" placeholder="Escriba aquí lo que sucedió..."></textarea>
+            <button id="sendSecurityBtn">Enviar a Seguridad Electrónica OCA</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
