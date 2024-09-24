@@ -14,6 +14,9 @@ const transporter = nodemailer.createTransport({
         pass: process.env.GMAIL_PASS
     }
 });
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html'); // Asegúrate de que 'public/index.html' exista
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
