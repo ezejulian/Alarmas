@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Servir archivos estáticos (HTML, CSS, JS)
-app.use(express.static('public'));
+app.use(express.static('Public'));
 
 // Ruta para enviar correos
 app.post('/send-email', (req, res) => {
