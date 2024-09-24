@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config(); // Para usar variables de entorno
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Usar el puerto que Vercel asigna
 
 // Configura el transporte SMTP con nodemailer
 const transporter = nodemailer.createTransport({
@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Servir archivos estáticos (HTML, CSS, JS)
 app.use(express.static('public'));
 
+// Ruta para enviar correos
 app.post('/send-email', (req, res) => {
     const { to, subject, body } = req.body;
 
@@ -40,6 +41,7 @@ app.post('/send-email', (req, res) => {
     });
 });
 
+// Escuchar en el puerto asignado
 app.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);
 });
