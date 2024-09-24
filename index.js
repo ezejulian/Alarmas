@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html'); // Asegúrate de que 'public/index.html' exista
+    res.sendFile(__dirname + '/Public/index.html'); // Asegúrate de que 'public/index.html' exista
 });
 
 app.use(bodyParser.json());
