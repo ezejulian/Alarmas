@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport({
     }
 });
 // Configura el middleware para servir archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
+// app.use(express.static(path.join(__dirname, 'public')));
+// app.use(bodyParser.json());
 
 // Ruta para servir el archivo HTML
 app.get('/', (req, res) => {
