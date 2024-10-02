@@ -1,54 +1,47 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
-require('dotenv').config(); // Para usar variables de entorno
+const SerialPort = require('serialport').SerialPort;
+const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000; // Usar el puerto que Vercel asigna
+const port = 5000;
 
-// Configura el transporte SMTP con nodemailer
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS
-    }
+// Reemplaza con el puerto de tu Arduino (ej. COM3, /dev/ttyUSB0, /dev/ttyACM0)
+const arduinoPort = 'COM9'; // Cambia esto según tu sistema
+const serialPort = new SerialPort({
+  path: arduinoPort,
+  baudRate: 9600,
 });
+
 // Configura el middleware para servir archivos estáticos
-// app.use(express.static(path.join(__dirname, 'public')));
-// app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
 // Ruta para servir el archivo HTML
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-
-
-// Ruta para enviar correos
-app.post('/send-email', (req, res) => {
-    const { to, subject, body } = req.body;
-
-    const mailOptions = {
-        from: process.env.GMAIL_USER,
-        to,
-        subject,
-        text: body,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error(error);
-            return res.status(500).send('Error al enviar el correo');
-        }
-        res.status(200).send('Correo enviado');
+// Ruta para manejar el encendido y apagado del LED
+app.post('/led', (req, res) => {
+  const command = req.body.command; // '1' para encender, '0' para apagar
+  if (command === '1' || command === '0') {
+    serialPort.write(command, (err) => {
+      if (err) {
+        return res.status(500).send('Error al enviar el comando');
+      }
+      res.send('Comando enviado: ' + command);
     });
+  } else {
+    res.status(400).send('Comando no válido');
+  }
 });
 
-// Escuchar en el puerto asignado
+// Manejo de errores
+serialPort.on('error', (err) => {
+  console.error('Error en el puerto serie: ', err.message);
+});
+
 app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });
