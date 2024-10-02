@@ -14,15 +14,19 @@ const transporter = nodemailer.createTransport({
         pass: process.env.GMAIL_PASS
     }
 });
+// Configura el middleware para servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+
+// Ruta para servir el archivo HTML
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/Public/index.html'); // Asegúrate de que 'public/index.html' exista
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Servir archivos estáticos (HTML, CSS, JS)
-app.use(express.static('Public'));
+
 
 // Ruta para enviar correos
 app.post('/send-email', (req, res) => {
